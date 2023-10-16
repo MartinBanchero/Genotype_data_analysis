@@ -70,10 +70,64 @@ genotypes may be due to contamination or issues during genotyping process.
 
 ?? should we do it already only with high call rate SNPs? 
 
+Plot sample call rate vs heterozygosity   
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+	**Advised**: exclude samples with more than 3 standard deviations away from mean heterozygosity.Lifelines uses 4sd from the mean heterozygosity. 
    
+4. Check sex discordance (Sample-level)
+========================================================================
+Sample mix-up is investigated by looking at sex mismatch, where sex
+information of each sample is compared with genotypes at chromosomes X and Y.
+
+.. note:: 
+	**NB:** This method however does not detect same sex sample mix-ups and is not reliable when there are sex chromosome abnormalities.
+	??For this step we need to use files with already excluded low call rate SNPs 
+
+5. Check relatedness (Sample-level)
+========================================================================
+
+Population-based cohort studies are often limited to unrelated individuals, and the generalized linear modeling approach
+(used in GWAS) assumes independence across individuals. Importantly, in regional cohort studies (e.g., hospital-based cohort studies) of complex
+diseases, individuals from the same family can be recruited unintentionally. A common measure
+of relatedness (or duplication) between pairs of samples is based on identity by descent (IBD). An
+IBD kinship coefficient of greater than 0.1875 may suggest relatedness, duplicates, or sample mixture.
+Typically, the individual of a related pair with lower genotype call rate is removed.
+
+LD pruning
+------------------------------------------------------------------------------
+First we need to perform linkage disequilibrium (LD) pruning with a threshold value of 0.7 (this could vary, some studies use 0.2) - remove SNPs with high LD with each other (removes one from each pair). 
+This eliminates a large degree of redundancy in the data. 
+
+Calculate IBD - identity by descent (the degree of recent shared ancestry)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This dimension reduction step is commonly applied prior to both IBD analysis and PCA. 
    
-   
-   
-   
+
+6. Hardy--Weinberg equilibrium (SNP level)
+========================================================================
+
+
+
+
+.. note::
+	Check ped file : does it have phenotypes? If ped doesn't have phenotypes reformat ped to add phenotypes (code not provided).
+	
+
+.. Advised::
+	 Threshold for HWE test statistic can vary. Consider p-value  \< 10e-5 or  \< 10e-6 in controls
+
+
+
+
+
+
+
+
+
+
+
    
 
