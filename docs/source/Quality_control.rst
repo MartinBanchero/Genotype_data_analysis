@@ -1,7 +1,11 @@
 Quality control
-=================================================
+#################################################
+
 **Genotype array QC GRIAC genetics** 
-# SNP array quality control protocol
+*************************************************
+
+SNP array quality control protocol
+=================================================
 
 This file describes step to perform quality control for the SNP array data.
 You will need genotype data in plink format (either .ped and .map or .bed file)
@@ -23,22 +27,22 @@ Let's prepare the environment by uploading the libraries and creating the functi
    You might need to change this function depending on the way you plan to run plink
 
 
-# 1. Check call rate per SNP and per sample (both SNP and Sample-level)
+1. Check call rate per SNP and per sample (both SNP and Sample-level)
 -------------------------------------------------------------------------
+
 The call rate for a given SNP is defined as the proportion of individuals
 in the study for which the corresponding SNP information is not missing
 
 The call rate for a given sample is defined as the proportion of SNPs
 that is missing for the sample.
 
-## Calculate call rate per sample (imiss) and per SNP (lmiss)
-------------------------------------------------------------------------
+Calculate call rate per sample (imiss) and per SNP (lmiss)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Plot histograms of call rate per sample
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-### Plot histograms of call rate per sample
--------------------------------------------------------------------------
-
-### Plot histograms of call rate per snp
----------------------------------------------------------------------------
+Plot histograms of call rate per snp
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
