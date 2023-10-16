@@ -1,9 +1,44 @@
 Quality control
 =================================================
-**Step to cover QC** From plink to imputation. 
+**Genotype array QC GRIAC genetics** 
+# SNP array quality control protocol
 
+This file describes step to perform quality control for the SNP array data.
+You will need genotype data in plink format (either .ped and .map or .bed file)
+
+The .ped file contains information on each study participant including family ID,
+participant ID, father ID, mother ID, sex, phenotype, and the full typed genotype. Here, each SNP
+is bi-allelic (i.e., only two nucleotides are observed at any given SNP across study participants) and
+coded as a pair of nucleotides (A, C, T, or G). Notably, the ordering in the pair is non-informative
+in the sense that the first alleles listed for each of the two SNPs are not necessarily on the same
+chromosome. The .map file contains a row for each SNP corresponding 
+chromosome (chr) and coordinate (BPPos) based on the current genome build.
+
+Most of the steps for the QC will be performed in plink1.9, so it has to be installed.  
+
+Let's prepare the environment by uploading the libraries and creating the function to run PLINK from the directory where the exe file is:
 
 .. note::
 
-   This project is under active development.
+   You might need to change this function depending on the way you plan to run plink
+
+
+# 1. Check call rate per SNP and per sample (both SNP and Sample-level)
+-------------------------------------------------------------------------
+The call rate for a given SNP is defined as the proportion of individuals
+in the study for which the corresponding SNP information is not missing
+
+The call rate for a given sample is defined as the proportion of SNPs
+that is missing for the sample.
+
+## Calculate call rate per sample (imiss) and per SNP (lmiss)
+------------------------------------------------------------------------
+
+
+### Plot histograms of call rate per sample
+-------------------------------------------------------------------------
+
+### Plot histograms of call rate per snp
+---------------------------------------------------------------------------
+
 
