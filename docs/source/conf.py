@@ -31,3 +31,4 @@ html_theme = 'furo'
 html_css_files = [
     'css/custom.css',
 ]
+

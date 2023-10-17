@@ -13,13 +13,28 @@ Welcome to GenotypeDA-UMCG-GRIAC's documentation!
    This project is under active development.
    
 .. toctree::
-   :maxdepth: 4
-   :caption: Table of Contents
-   :name: mastertoc
+   :hidden:
+   :maxdepth: 1
+   :caption: Workflow
    
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: Genome studio
    
-   Workflow
-   Raw data processing <Processing_raw_data>
+   Generate plink files <Processing_raw_data>
+   
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: Quality control
+   
    QC <Quality_control>
-   GWAS
+   
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: GWAS
+     
+   GWAS steps <GWAS>
    
