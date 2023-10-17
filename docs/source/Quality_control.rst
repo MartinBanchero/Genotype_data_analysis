@@ -19,6 +19,11 @@ Most of the steps for the QC will be performed in plink1.9, so it has to be inst
 
 Let's prepare the environment by uploading the libraries and creating the function to run PLINK from the directory where the exe file is:
 
+.. code-block:: r
+
+	runPLINK <- function(PLINKoptions = ''){
+  	system(paste("~/Packages/PLINK/plink1.9/plink", PLINKoptions))
+
 .. note::
 
    You might need to change this function depending on the way you plan to run plink
