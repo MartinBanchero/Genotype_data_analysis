@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Check call rate per SNP and per sample (both SNP and Sample-level) &mdash; SNP/GWAS workflow 2023 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=a4664895"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="From raw to plink" href="genomestudio.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Set-up</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">From raw data to plink</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genomestudio.html">From raw to plink</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#load-data">Load data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#re-cluster">Re-cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#genomestudio-output-files">genomestudio output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#authors">Authors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quality control</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Check call rate per SNP and per sample (both SNP and Sample-level)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#call-rate-per-sample-imiss-and-per-snp-lmiss">Call rate per sample (imiss) and per SNP (lmiss)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plot-histograms-of-call-rate-per-sample">Plot histograms of call rate per sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plot-histograms-of-call-rate-per-snp">Plot histograms of call rate per snp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plot-histograms-of-call-rate-per-sample-after-filtered-snps">Plot histograms of call rate per sample after filtered SNPs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#check-maf-snp-level">2. Check MAF (SNP-level)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plot-maf-histogram">Plot MAF histogram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#check-sample-heterozygosity-sample-level">3. Check sample heterozygosity (Sample-level)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plot-sample-call-rate-vs-heterozygosity">Plot sample call rate vs heterozygosity</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#check-sex-discordance-sample-level">4. Check sex discordance (Sample-level)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plot-reported-sex-vs-f-value-x-heterozygosity-level">Plot reported sex vs F value (X heterozygosity level).</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#hardy-weinberg-equilibrium-snp-level">6. Hardy–Weinberg equilibrium (SNP level)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#sample-qc-pca">7. Sample QC: PCA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#last-step">Last step:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#final-remarks">Final remarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#author">Author</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#references">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SNP/GWAS workflow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">1. Check call rate per SNP and per sample (both SNP and Sample-level)</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com///blob//docs/qualitycontrol.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="check-call-rate-per-snp-and-per-sample-both-snp-and-sample-level">
+<span id="qualitycontrol-page"></span><h1>1. Check call rate per SNP and per sample (both SNP and Sample-level)<a class="headerlink" href="#check-call-rate-per-snp-and-per-sample-both-snp-and-sample-level" title="Link to this heading"></a></h1>
+<p>The call rate for a given SNP is defined as the proportion of individuals
+in the study for which the corresponding SNP information is not missing</p>
+<p>The call rate for a given sample is defined as the proportion of SNPs
+that is missing for the sample.</p>
+<section id="call-rate-per-sample-imiss-and-per-snp-lmiss">
+<h2>Call rate per sample (imiss) and per SNP (lmiss)<a class="headerlink" href="#call-rate-per-sample-imiss-and-per-snp-lmiss" title="Link to this heading"></a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --missing --out file_call_rate&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<ul class="simple">
+<li><p>Change format to make it easier for R data frame imiss:</p></li>
+</ul>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_call_rate.imiss | tr -s &#39; &#39; &#39;\t&#39; &gt; call_rate_sample.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Change format lmiss</p></li>
+</ul>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_call_rate.lmiss | tr -s &#39; &#39; &#39;\t&#39; &gt; call_rate_SNP.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="plot-histograms-of-call-rate-per-sample">
+<h2>Plot histograms of call rate per sample<a class="headerlink" href="#plot-histograms-of-call-rate-per-sample" title="Link to this heading"></a></h2>
+<p>Load call rate SNP and sample.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="w">	</span><span class="n">call_rate_SNP</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;call_rate_SNP.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  				</span><span class="nf">select </span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+<span class="w">	</span><span class="n">call_rate_samples</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;call_rate_sample.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  				</span><span class="nf">select </span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-histograms-of-call-rate-per-snp">
+<h2>Plot histograms of call rate per snp<a class="headerlink" href="#plot-histograms-of-call-rate-per-snp" title="Link to this heading"></a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#calculate n of filtered our samples with missing rate &lt; 0.1</span>
+<span class="n">n_filtered_out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">call_rate_SNP</span><span class="o">$</span><span class="n">F_MISS</span><span class="w"> </span><span class="o">&gt;=</span><span class="m">0.1</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">call_rate_SNP</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">((</span><span class="m">1</span><span class="o">-</span><span class="n">F_MISS</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab </span><span class="p">(</span><span class="s">&#39;SNP number&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab </span><span class="p">(</span><span class="s">&#39;Call Rate(%)&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;red&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">70</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100000</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Number of SNPs to exclude = &quot;</span><span class="p">,</span>
+<span class="w">                                                     </span><span class="n">n_filtered_out</span><span class="p">),</span>
+<span class="w">           </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Exclude SNPs with call rate &lt; 90% and check again sample call rate</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --geno 0.1 --recode --out file_filtered_snps&quot;</span><span class="p">)</span>
+
+<span class="c1"># check again sample call rate: </span>
+<span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file_filtered_snps.ped --map file_filtered_snps.map --missing --out file_call_rate_filtered_snps&quot;</span><span class="p">)</span>
+
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_call_rate_filtered_snps.imiss | tr -s &#39; &#39; &#39;\t&#39; &gt; file_call_rate_filtered_snps_imiss.tabs&quot;</span><span class="p">)</span>
+
+<span class="n">call_rate_samples_after_filter</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_call_rate_filtered_snps_imiss.tabs&quot;</span><span class="p">)</span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select </span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-histograms-of-call-rate-per-sample-after-filtered-snps">
+<h2>Plot histograms of call rate per sample after filtered SNPs<a class="headerlink" href="#plot-histograms-of-call-rate-per-sample-after-filtered-snps" title="Link to this heading"></a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This iteration can help you decide which threshold to choose to exclude low quality samples and SNPs.
+The threshold depends on the sample size, usually it varies from 95% to 98%.</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">n_filtered_out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">call_rate_samples_after_filter</span><span class="o">$</span><span class="n">F_MISS</span><span class="w"> </span><span class="o">&gt;</span><span class="m">0.1</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">call_rate_samples_after_filter</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">((</span><span class="m">1</span><span class="o">-</span><span class="n">F_MISS</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab </span><span class="p">(</span><span class="s">&#39;Sample number&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab </span><span class="p">(</span><span class="s">&#39;Call Rate(%)&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;red&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">70</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">200</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Number of samples to exclude = &quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                                                  </span><span class="n">n_filtered_out</span><span class="p">),</span>
+<span class="w">           </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="check-maf-snp-level">
+<span id="checkmaf-page"></span><h1>2. Check MAF (SNP-level)<a class="headerlink" href="#check-maf-snp-level" title="Link to this heading"></a></h1>
+<p>Minor allele frequency (MAF). A large degree of homogeneity at a given SNP
+across study participants generally results in inadequate power to infer a statistically significant
+relationship between the SNP and the trait under study. This can occur when we have a very small
+MAF so that the large majority of individuals have two copies of the major allele.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Threshold for MAF can vary between 1% and 5% (for small sample settings)</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --freq --out file_maf&quot;</span><span class="p">)</span>
+
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_maf.frq | tr -s &#39; &#39; &#39;\t&#39; &gt; file_maf_frq.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="plot-maf-histogram">
+<h2>Plot MAF histogram<a class="headerlink" href="#plot-maf-histogram" title="Link to this heading"></a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For small sample size it is recommended to exclude SNPs with MAF &lt; 0.05.</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">MAF_check</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_maf_frq.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+<span class="n">maf_01</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">MAF_check</span><span class="o">$</span><span class="n">MAF</span><span class="o">&lt;</span><span class="m">0.01</span><span class="p">)</span><span class="w"> </span><span class="c1"># threshold at 1%</span>
+<span class="n">maf_05</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">MAF_check</span><span class="o">$</span><span class="n">MAF</span><span class="o">&lt;</span><span class="m">0.05</span><span class="p">)</span><span class="w"> </span><span class="c1"># threshold at 5%</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">MAF_check</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">MAF</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_histogram</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab </span><span class="p">(</span><span class="s">&quot;# of occurences&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab </span><span class="p">(</span><span class="s">&quot;Minor allele frequency&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.01</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;grey&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">-0.02</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">100000</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;maf = 0.01    &quot;</span><span class="p">,</span><span class="n">maf_01</span><span class="p">,</span><span class="w"> </span><span class="s">&#39; SNPs&#39;</span><span class="p">),</span>
+<span class="w">           </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;grey&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">0.043</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">100000</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;maf= 0.05    &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">maf_05</span><span class="p">,</span><span class="w"> </span><span class="s">&#39; SNPs&#39;</span><span class="p">),</span>
+<span class="w">           </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="check-sample-heterozygosity-sample-level">
+<span id="checkheterozygo-page"></span><h1>3. Check sample heterozygosity (Sample-level)<a class="headerlink" href="#check-sample-heterozygosity-sample-level" title="Link to this heading"></a></h1>
+<p>Heterozygosity refers to the presence of each of the two alleles
+at a given SNP within an individual.<br />
+Outliers showing excess or depletion in heterozygotes
+genotypes may be due to contamination or issues during genotyping process.</p>
+<p>should we do it already only with high call rate SNPs?</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --het --out file&quot;</span><span class="p">)</span>
+
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file.het | tr -s &#39; &#39; &#39;\t&#39; &gt; file_het.tabs&quot;</span><span class="p">)</span>
+
+<span class="n">het_level</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim </span><span class="p">(</span><span class="s">&quot;file_het.tabs&quot;</span><span class="p">)</span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select </span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="plot-sample-call-rate-vs-heterozygosity">
+<h2>Plot sample call rate vs heterozygosity<a class="headerlink" href="#plot-sample-call-rate-vs-heterozygosity" title="Link to this heading"></a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Exclude samples with more than 3 standard deviations away from mean heterozygosity.
+Lifelines uses 4sd from the mean heterozygosity.</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sample_missing_rate_het</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">call_rate_samples_after_filter</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">left_join</span><span class="p">(</span><span class="n">het_level</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;IID&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;IID&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">rename</span><span class="p">(</span><span class="n">heter_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;F&quot;</span><span class="p">)</span>
+<span class="n">std</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">sample_missing_rate_het</span><span class="o">$</span><span class="n">heter_rate</span><span class="p">)</span><span class="w"> </span><span class="c1">## calculate standard deviation</span>
+<span class="n">std_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="m">-2</span><span class="o">*</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="o">*</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="m">-3</span><span class="o">*</span><span class="n">std</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">sample_missing_rate_het</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="w"> </span><span class="n">F_MISS</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="w"> </span><span class="n">heter_rate</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_hline</span><span class="p">(</span><span class="n">yintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std_list</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">],</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;grey&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_hline</span><span class="p">(</span><span class="n">yintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std_list</span><span class="p">[</span><span class="m">5</span><span class="o">:</span><span class="m">6</span><span class="p">],</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;red&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Heterozygosity vs Missingness across samples&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Proportion of missing SNPs&quot;</span><span class="p">)</span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Heterozygosity rate(+- 3 sd)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="check-sex-discordance-sample-level">
+<span id="checksex-page"></span><h1>4. Check sex discordance (Sample-level)<a class="headerlink" href="#check-sex-discordance-sample-level" title="Link to this heading"></a></h1>
+<p>Sample mix-up is investigated by looking at sex mismatch, where sex
+information of each sample is compared with genotypes at chromosomes X and Y.</p>
+<p><em>NB: This method however does not detect same sex sample mix-ups and is not reliable
+when there are sex chromosome abnormalities.</em></p>
+<p>??For this step we need to use files with already excluded low call rate SNPs</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --mind 0.1 --recode --out file_SNP_filtered&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now let’s check check sex discordance</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file_SNP_filtered.ped --map file_SNP_filtered.map --check-sex --out file_SNP_filtered&quot;</span><span class="p">)</span>
+
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_SNP_filtered.sexcheck | tr -s &#39; &#39; &#39;\t&#39; &gt;  file_SNP_filtered_sexcheck.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="plot-reported-sex-vs-f-value-x-heterozygosity-level">
+<h2>Plot reported sex vs F value (X heterozygosity level).<a class="headerlink" href="#plot-reported-sex-vs-f-value-x-heterozygosity-level" title="Link to this heading"></a></h2>
+<p>Reported sex will is taken from .ped file by plink</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Plink_sex_filtered</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_SNP_filtered_sexcheck.tabs&quot;</span><span class="p">)</span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Plink_sex_filtered</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Plink_sex_filtered</span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;male&quot;</span><span class="p">))</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">Plink_sex_filtered</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">PEDSEX</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="w"> </span><span class="n">`F`</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_jitter</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">((</span><span class="n">Plink_sex_filtered</span><span class="o">$</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">))</span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="nf">ifelse</span><span class="p">(((</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;F&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0.2</span><span class="p">)),</span><span class="w"> </span><span class="n">IID</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">),</span>
+<span class="w">                      </span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.4</span><span class="p">,</span><span class="w"> </span><span class="n">vjust</span><span class="o">=</span><span class="w"> </span><span class="m">0.4</span><span class="p">))</span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Reported sex&quot;</span><span class="p">)</span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Heterozygosity rate&quot;</span><span class="p">)</span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>plink report marks problematic samples, this information should be available in <em>file_SNP_filtered_sexcheck.tabs</em></p>
+<p><strong>Advised:</strong> It is also important to look at the plot and asses it visually</p>
+<div class="(checkheterozygo-page)= docutils">
+<h3 class="rubric" id="check-y-chr-counts-also-if-there-are-strange-samples">Check Y chr counts also if there are strange samples</h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file_SNP_filtered.ped --map file_SNP_filtered.map --check-sex ycount --out file_SNP_filtered_ycount&quot;</span><span class="p">)</span>
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_SNP_filtered_ycount.sexcheck | tr -s &#39; &#39; &#39;\t&#39; &gt; file_SNP_filtered_ycount_sexcheck.tabs&quot;</span><span class="p">)</span>
+<span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_SNP_filtered_ycount_sexcheck.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<h3 class="rubric" id="plot-y-chromosome-counts">Plot y chromosome counts</h3>
+<p><strong>Advised</strong> Look at the plot and check that males and females samples are clearly separating on Y-axis</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Plink_sex_filtered_ycount</span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;male&quot;</span><span class="p">))</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">Plink_sex_filtered_ycount</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">PEDSEX</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="w"> </span><span class="n">YCOUNT</span><span class="w"> </span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="nf">ifelse</span><span class="p">(((</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;male&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">YCOUNT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">3000</span><span class="p">)),</span><span class="w"> </span><span class="n">IID</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">),</span>
+<span class="w">                      </span><span class="n">hjust</span><span class="o">=</span><span class="w"> </span><span class="m">0.4</span><span class="p">,</span><span class="w"> </span><span class="n">vjust</span><span class="o">=</span><span class="w"> </span><span class="m">0.4</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Reported sex&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Y counts&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span>
+</pre></div>
+</div>
+<h2 class="rubric" id="check-relatedness-sample-level"><span id="checkrelatedness-page"></span>5. Check relatedness (Sample-level)</h2>
+<p>Population-based cohort studies are often limited to unrelated individuals, and the generalized linear modeling approach
+(used in GWAS) assumes independence across individuals. Importantly, in regional cohort studies (e.g., hospital-based cohort studies) of complex
+diseases, individuals from the same family can be recruited unintentionally. A common measure
+of relatedness (or duplication) between pairs of samples is based on identity by descent (IBD). An
+IBD kinship coefficient of greater than 0.1875 may suggest relatedness, duplicates, or sample mixture.
+Typically, the individual of a related pair with lower genotype call rate is removed.</p>
+<h3 class="rubric" id="ld-pruning">LD pruning</h3>
+<p>First we need to perform linkage disequilibrium (LD) pruning with a threshold value of 0.7 (this could vary, some studies use 0.2) - remove SNPs with high LD with each other (removes one from each pair).
+This eliminates a large degree of redundancy in the data.
+This dimension reduction step is commonly applied prior to both IBD analysis and PCA.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --indep-pairwise 50 5 0.7 --out file&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Keep only selected snps for your data</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --exclude file.prune.out --recode --out prunedSet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<h3 class="rubric" id="calculate-ibd-identity-by-descent">Calculate IBD - identity by descent</h3>
+<p>Defined as the degree of recent shared ancestry.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&#39;--ped prunedSet.ped --map prunedSet.map --Z-genome --out Pruned_IBD&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Change format</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">system</span><span class="p">(</span><span class="s">&quot;zcat Pruned_IBD.genome.gz | tr -s &#39; &#39; &#39;\t&#39; &gt; Pruned_IBD.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s check samples with IBD &gt; 0.1875 (PI_HAT column in the plink output)</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Check the table and exclude one from the pair with the lower call rate (code not provided)</p>
+</div>
+</div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">IBD_high_relat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">IBD</span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">filter</span><span class="p">(</span><span class="n">PI_HAT</span><span class="o">&gt;</span><span class="w"> </span><span class="m">0.1875</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">IBD_high_relat</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="hardy-weinberg-equilibrium-snp-level">
+<span id="checkhw-page"></span><h1>6. Hardy–Weinberg equilibrium (SNP level)<a class="headerlink" href="#hardy-weinberg-equilibrium-snp-level" title="Link to this heading"></a></h1>
+<p>Violations of HWE can be an indication of the presence of population
+substructure or the occurrence of a genotyping error. While they are not always distinguishable, it is
+a common practice to assume a genotyping error and remove SNPs for which HWE is violated.
+If case-control status is available, this filtering should be based only on controls as a violation in cases
+may be an indication of association.
+Departures from HWE are generally measured at a given SNP
+using a 𝜒2 goodness-of-fit test between the observed and expected genotypes.</p>
+<p>Check ped file : does it have phenotypes? If ped doesn’t have phenotypes reformat ped to add phenotypes (code not provided).
+Check only controls: I created separate ped only with controls.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Threshold for HWE test statistic can vary.
+Consider to exclude SNPs with p-value  &lt; 10e-5 or  &lt; 10e-6 in controls</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped only_controls.ped --map file.map --hardy --out Controls_Hardy&quot;</span><span class="p">)</span>
+
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat Controls_Hardy.hwe | tr -s &#39; &#39; &#39;\t&#39; &gt; Controls_Hardy_hwe.tab&quot;</span><span class="p">)</span>
+
+<span class="n">PLINK_controls_HWE</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;Controls_Hardy_hwe.tab&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">filter</span><span class="p">(</span><span class="n">TEST</span><span class="w"> </span><span class="o">==</span><span class="s">&quot;UNAFF&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sample-qc-pca">
+<span id="checkpca-page"></span><h1>7. Sample QC: PCA<a class="headerlink" href="#sample-qc-pca" title="Link to this heading"></a></h1>
+<p>Identification of individuals of divergent ancestry.
+This step requires reference dataset with diverse ethnicities (HGDP / HapMap).
+Exclusion of the individuals might depend on the research questions.</p>
+<section id="last-step">
+<h2>Last step:<a class="headerlink" href="#last-step" title="Link to this heading"></a></h2>
+<p>Create a list of all the SNPs and samples you need to exclude.</p>
+<p>Create filterd bed file (output format could be different)</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --remove to.be.deleted.ind --exclude fail-snp-qc.txt --make-bed --out file.QCed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="final-remarks">
+<span id="finalremarks-page"></span><h1>Final remarks<a class="headerlink" href="#final-remarks" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p>You might consider extra QC: Check for swapped samples by comparing SNPs from array vs SNPs from RNA-seq.</p></li>
+<li><p>For the imputation take care of the reference genome build used for the creation of the plink files.</p></li>
+<li><p>For the imputation on michigan imputation server vcf files are needed. plink function can be used for the that:<br />
+<code class="docutils literal notranslate"><span class="pre">--recode</span> <span class="pre">vcf</span></code></p></li>
+<li><p>Consider performing after imputation QC:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bcftools<span class="w"> </span>view<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;R2&gt;0.3 &amp; MAF &gt;.05&#39;</span><span class="w"> </span>-Oz<span class="w"> </span><span class="o">[</span>input_file<span class="o">]</span><span class="w"> </span>&gt;<span class="w"> </span><span class="o">[</span>output_file<span class="o">]</span>
+</pre></div>
+</div>
+<p>These steps are planned to be updated in the current document.</p>
+</section>
+<section id="author">
+<h1>Author<a class="headerlink" href="#author" title="Link to this heading"></a></h1>
+<p>Tatiana Karp</p>
+</section>
+<section id="references">
+<span id="references-page"></span><h1>References<a class="headerlink" href="#references" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p>Turner, Stephen, et al. “Quality control procedures for genome‐wide association studies.” Current protocols in human genetics 68.1 (2011): 1-19.</p></li>
+<li><p>Reed, Eric, et al. “A guide to genome‐wide association analysis and post‐analytic interrogation.” Statistics in medicine 34.28 (2015): 3769-3792.</p></li>
+<li><p>Anderson, Carl A., et al. “Data quality control in genetic case-control association studies.” Nature protocols 5.9 (2010): 1564-1573.</p></li>
+</ol>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="genomestudio.html" class="btn btn-neutral float-left" title="From raw to plink" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
