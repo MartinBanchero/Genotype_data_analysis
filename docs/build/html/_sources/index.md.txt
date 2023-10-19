@@ -13,9 +13,10 @@ in the sense that the first alleles listed for each of the two SNPs are not nece
 chromosome. The .map file contains a row for each SNP corresponding 
 chromosome (chr) and coordinate (BPPos) based on the current genome build.
 
-Most of the steps for the QC will be performed in plink1.9, so it has to be installed.  
-
-Let's prepare the environment by uploading the libraries
+### Authors
+Tatiana Karp, Yidan Sun, Martin Banchero
+### Acknowledgements
+Rui Marcelo
 
 
 ```{toctree}

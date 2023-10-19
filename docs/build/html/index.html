@@ -48,8 +48,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">From raw data to plink</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="genomestudio.html">From raw to plink</a></li>
-<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#load-data">Load data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomestudio.html">Load data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genomestudio.html#re-cluster">Re-cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genomestudio.html#genomestudio-output-files">genomestudio output files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genomestudio.html#authors">Authors</a></li>
@@ -60,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#check-maf-snp-level">2. Check MAF (SNP-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#check-sample-heterozygosity-sample-level">3. Check sample heterozygosity (Sample-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#check-sex-discordance-sample-level">4. Check sex discordance (Sample-level)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#check-relatedness-sample-level">5. Check relatedness (Sample-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#hardy-weinberg-equilibrium-snp-level">6. Hardy–Weinberg equilibrium (SNP level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#sample-qc-pca">7. Sample QC: PCA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#final-remarks">Final remarks</a></li>
@@ -108,8 +108,13 @@ coded as a pair of nucleotides (A, C, T, or G). Notably, the ordering in the pai
 in the sense that the first alleles listed for each of the two SNPs are not necessarily on the same
 chromosome. The .map file contains a row for each SNP corresponding
 chromosome (chr) and coordinate (BPPos) based on the current genome build.</p>
-<p>Most of the steps for the QC will be performed in plink1.9, so it has to be installed.</p>
-<p>Let’s prepare the environment by uploading the libraries</p>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Link to this heading"></a></h3>
+<p>Tatiana Karp, Yidan Sun, Martin Banchero</p>
+</section>
+<section id="acknowledgements">
+<h3>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading"></a></h3>
+<p>Rui Marcelo</p>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -118,6 +123,7 @@ chromosome (chr) and coordinate (BPPos) based on the current genome build.</p>
 </div>
 <div class="toctree-wrapper compound">
 </div>
+</section>
 </section>
 </section>
 

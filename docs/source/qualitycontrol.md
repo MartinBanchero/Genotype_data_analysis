@@ -228,7 +228,9 @@ ggplot(Plink_sex_filtered, aes(x=PEDSEX, y= `F`)) +
 plink report marks problematic samples, this information should be available in *file_SNP_filtered_sexcheck.tabs*
 
 **Advised:** It is also important to look at the plot and asses it visually 
-:::(checkheterozygo-page)=
+:::
+
+(checkheterozygo-page)=
 
 ### Check Y chr counts also if there are strange samples
 

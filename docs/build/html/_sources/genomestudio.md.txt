@@ -1,9 +1,5 @@
 (genomestudio-page)=
 
-## From raw to plink
-To generate plink files we use genomestudio as is very easy to work with.
-
-(load-page)=
 ## Load data
 image
 

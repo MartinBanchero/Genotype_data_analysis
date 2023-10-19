@@ -20,7 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="From raw to plink" href="genomestudio.html" /> 
+    <link rel="next" title="GWAS software" href="gwide.html" />
+    <link rel="prev" title="Load data" href="genomestudio.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,8 +49,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">From raw data to plink</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="genomestudio.html">From raw to plink</a></li>
-<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#load-data">Load data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomestudio.html">Load data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genomestudio.html#re-cluster">Re-cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genomestudio.html#genomestudio-output-files">genomestudio output files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genomestudio.html#authors">Authors</a></li>
@@ -73,6 +73,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#check-sex-discordance-sample-level">4. Check sex discordance (Sample-level)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#plot-reported-sex-vs-f-value-x-heterozygosity-level">Plot reported sex vs F value (X heterozygosity level).</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#check-y-chr-counts-also-if-there-are-strange-samples">Check Y chr counts also if there are strange samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plot-y-chromosome-counts">Plot y chromosome counts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#check-relatedness-sample-level">5. Check relatedness (Sample-level)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ld-pruning">LD pruning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculate-ibd-identity-by-descent">Calculate IBD - identity by descent</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#hardy-weinberg-equilibrium-snp-level">6. Hardy–Weinberg equilibrium (SNP level)</a></li>
@@ -83,6 +90,10 @@
 <li class="toctree-l1"><a class="reference internal" href="#final-remarks">Final remarks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#author">Author</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#references">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">GWAS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gwide.html">GWAS software</a></li>
 </ul>
 
         </div>
@@ -316,15 +327,19 @@ when there are sex chromosome abnormalities.</em></p>
 <p class="admonition-title">Tip</p>
 <p>plink report marks problematic samples, this information should be available in <em>file_SNP_filtered_sexcheck.tabs</em></p>
 <p><strong>Advised:</strong> It is also important to look at the plot and asses it visually</p>
-<div class="(checkheterozygo-page)= docutils">
-<h3 class="rubric" id="check-y-chr-counts-also-if-there-are-strange-samples">Check Y chr counts also if there are strange samples</h3>
+</div>
+</section>
+<section id="check-y-chr-counts-also-if-there-are-strange-samples">
+<span id="id1"></span><h2>Check Y chr counts also if there are strange samples<a class="headerlink" href="#check-y-chr-counts-also-if-there-are-strange-samples" title="Link to this heading"></a></h2>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file_SNP_filtered.ped --map file_SNP_filtered.map --check-sex ycount --out file_SNP_filtered_ycount&quot;</span><span class="p">)</span>
 <span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_SNP_filtered_ycount.sexcheck | tr -s &#39; &#39; &#39;\t&#39; &gt; file_SNP_filtered_ycount_sexcheck.tabs&quot;</span><span class="p">)</span>
 <span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_SNP_filtered_ycount_sexcheck.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
 <span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<h3 class="rubric" id="plot-y-chromosome-counts">Plot y chromosome counts</h3>
+</section>
+<section id="plot-y-chromosome-counts">
+<h2>Plot y chromosome counts<a class="headerlink" href="#plot-y-chromosome-counts" title="Link to this heading"></a></h2>
 <p><strong>Advised</strong> Look at the plot and check that males and females samples are clearly separating on Y-axis</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Plink_sex_filtered_ycount</span><span class="o">%&gt;%</span>
 <span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;male&quot;</span><span class="p">))</span>
@@ -337,14 +352,18 @@ when there are sex chromosome abnormalities.</em></p>
 <span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span>
 </pre></div>
 </div>
-<h2 class="rubric" id="check-relatedness-sample-level"><span id="checkrelatedness-page"></span>5. Check relatedness (Sample-level)</h2>
+</section>
+</section>
+<section id="check-relatedness-sample-level">
+<span id="checkrelatedness-page"></span><h1>5. Check relatedness (Sample-level)<a class="headerlink" href="#check-relatedness-sample-level" title="Link to this heading"></a></h1>
 <p>Population-based cohort studies are often limited to unrelated individuals, and the generalized linear modeling approach
 (used in GWAS) assumes independence across individuals. Importantly, in regional cohort studies (e.g., hospital-based cohort studies) of complex
 diseases, individuals from the same family can be recruited unintentionally. A common measure
 of relatedness (or duplication) between pairs of samples is based on identity by descent (IBD). An
 IBD kinship coefficient of greater than 0.1875 may suggest relatedness, duplicates, or sample mixture.
 Typically, the individual of a related pair with lower genotype call rate is removed.</p>
-<h3 class="rubric" id="ld-pruning">LD pruning</h3>
+<section id="ld-pruning">
+<h2>LD pruning<a class="headerlink" href="#ld-pruning" title="Link to this heading"></a></h2>
 <p>First we need to perform linkage disequilibrium (LD) pruning with a threshold value of 0.7 (this could vary, some studies use 0.2) - remove SNPs with high LD with each other (removes one from each pair).
 This eliminates a large degree of redundancy in the data.
 This dimension reduction step is commonly applied prior to both IBD analysis and PCA.</p>
@@ -355,7 +374,9 @@ This dimension reduction step is commonly applied prior to both IBD analysis and
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --exclude file.prune.out --recode --out prunedSet&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<h3 class="rubric" id="calculate-ibd-identity-by-descent">Calculate IBD - identity by descent</h3>
+</section>
+<section id="calculate-ibd-identity-by-descent">
+<h2>Calculate IBD - identity by descent<a class="headerlink" href="#calculate-ibd-identity-by-descent" title="Link to this heading"></a></h2>
 <p>Defined as the degree of recent shared ancestry.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&#39;--ped prunedSet.ped --map prunedSet.map --Z-genome --out Pruned_IBD&#39;</span><span class="p">)</span>
 </pre></div>
@@ -368,8 +389,6 @@ This dimension reduction step is commonly applied prior to both IBD analysis and
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Check the table and exclude one from the pair with the lower call rate (code not provided)</p>
-</div>
-</div>
 </div>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">IBD_high_relat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">IBD</span><span class="o">%&gt;%</span>
 <span class="w">  </span><span class="nf">filter</span><span class="p">(</span><span class="n">PI_HAT</span><span class="o">&gt;</span><span class="w"> </span><span class="m">0.1875</span><span class="p">)</span>
@@ -449,7 +468,8 @@ Exclusion of the individuals might depend on the research questions.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="genomestudio.html" class="btn btn-neutral float-left" title="From raw to plink" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="genomestudio.html" class="btn btn-neutral float-left" title="Load data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gwide.html" class="btn btn-neutral float-right" title="GWAS software" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
