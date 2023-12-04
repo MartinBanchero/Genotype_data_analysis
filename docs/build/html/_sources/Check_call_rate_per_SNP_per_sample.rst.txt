@@ -1,5 +1,5 @@
 1. Check call rate per SNP and per sample (both SNP and Sample-level)
-=========================================================================
+======================================================================================
 
 The call rate for a given SNP is defined as the proportion of individuals
 in the study for which the corresponding SNP information is not missing
@@ -26,7 +26,7 @@ that is missing for the sample.
 
 
 Plot histograms of call rate per sample
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: r
 	:caption: Load call rate SNP and sample.
 	
@@ -37,5 +37,5 @@ Plot histograms of call rate per sample
 
 
 Plot histograms of call rate per snp
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

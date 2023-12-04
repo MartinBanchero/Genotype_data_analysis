@@ -1,56 +1,40 @@
 # SNP/GWAS workflow documentation!
 
-## SNP array quality control protocol
+## Introduction
 
-This file describes step to perform quality control for the SNP array data.
-You will need genotype data in plink format (either .ped and .map or .bed file)
+Workflow to cover processing *genotype data* from intensities to imputation and *GWAS analysis*. 
+The rationale is describe in the following figure:
 
-The .ped file contains information on each study participant including family ID,
-participant ID, father ID, mother ID, sex, phenotype, and the full typed genotype. Here, each SNP
-is bi-allelic (i.e., only two nucleotides are observed at any given SNP across study participants) and
-coded as a pair of nucleotides (A, C, T, or G). Notably, the ordering in the pair is non-informative
-in the sense that the first alleles listed for each of the two SNPs are not necessarily on the same
-chromosome. The .map file contains a row for each SNP corresponding 
-chromosome (chr) and coordinate (BPPos) based on the current genome build.
-
-### Authors
-Tatiana Karp, Yidan Sun, Martin Banchero
-### Acknowledgements
-Rui Marcelo
 
 
 ```{toctree}
 :hidden:
-:caption: Introduction
 :maxdepth: 1
-
-setup
+:caption: Genome studio
+   
+Generate plink files <Processing_raw_data>
 
 ```
 
 ```{toctree}
 :hidden:
-:caption: From raw data to plink
 :maxdepth: 1
-
-genomestudio
-
-```
-
-```{toctree}
-:hidden:
 :caption: Quality control
-:maxdepth: 1
-
-qualitycontrol
-
+   
+Quality control overview<QC_overview>
+Check call rate per SNP and per sample <Check_call_rate_per_SNP_per_sample>
+Check MAF (SNP-level) <Check_MAF>
+Check sample heterozygosity (Sample-level) <Check_sample_heterozygosity>
+Check sex discordance (Sample-level) <Check_sex_discordance>
+Check relatedness (Sample-level) <Check_relatedness>
+Hardy--Weinberg equilibrium (SNP level) <Hardy--Weinberg_equilibrium>
 ```
+
+   
 ```{toctree}
 :hidden:
-:caption: GWAS
 :maxdepth: 1
-
-gwide
-
+:caption: GWAS
+     
+GWAS
 ```
-
