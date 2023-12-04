@@ -1,26 +1,56 @@
-# mpxtractor
-**mpxtractor: A flexible R package to process data from different plate reader machines.**
+# SNP/GWAS workflow documentation!
 
-<div align="justify">
+## SNP array quality control protocol
 
-The main function of mpxtractor is to provide a simple method that can
-process raw data from microplate readers like SpectraMax, FluorStar, and
-MultiscanGO and apply different methods to it. This package generates
-tidy tibble objects, this data can be combined with layout files, and then
-growth rates are calculated and plot over a microplate frame. This is a
-critical point in several research lines performing experiments using
-microplate reader machines mainly due to the time that takes to clean
-and sort the raw data into a tidy format. Also, the features of this
-package allow detecting which wells present faulty data e.g wells not
-filled correctly. Another feature of mpxtractor is that it allows
-plotting the layout file over a microplate frame, this is very useful.
+This file describes step to perform quality control for the SNP array data.
+You will need genotype data in plink format (either .ped and .map or .bed file)
+
+The .ped file contains information on each study participant including family ID,
+participant ID, father ID, mother ID, sex, phenotype, and the full typed genotype. Here, each SNP
+is bi-allelic (i.e., only two nucleotides are observed at any given SNP across study participants) and
+coded as a pair of nucleotides (A, C, T, or G). Notably, the ordering in the pair is non-informative
+in the sense that the first alleles listed for each of the two SNPs are not necessarily on the same
+chromosome. The .map file contains a row for each SNP corresponding 
+chromosome (chr) and coordinate (BPPos) based on the current genome build.
+
+### Authors
+Tatiana Karp, Yidan Sun, Martin Banchero
+### Acknowledgements
+Rui Marcelo
 
 
-```{contents} Table of Contents
-:depth: 3
-# Sections
-## section 1
-## section 2
-## section 3
+```{toctree}
+:hidden:
+:caption: Introduction
+:maxdepth: 1
+
+setup
+
+```
+
+```{toctree}
+:hidden:
+:caption: From raw data to plink
+:maxdepth: 1
+
+genomestudio
+
+```
+
+```{toctree}
+:hidden:
+:caption: Quality control
+:maxdepth: 1
+
+qualitycontrol
+
+```
+```{toctree}
+:hidden:
+:caption: GWAS
+:maxdepth: 1
+
+gwide
+
 ```
 

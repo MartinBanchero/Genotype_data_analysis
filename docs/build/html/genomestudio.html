@@ -1,27 +1,13 @@
-<<<<<<< HEAD
-<!doctype html>
-<html class="no-js" lang="en" data-content_root="./">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="#" />
-
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 --><title>Search - GenotypeDA-UMCG-GRIAC 2023 documentation</title><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
-    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
-    
-=======
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search &mdash; SNP/GWAS workflow 2023 documentation</title>
+  <title>Load data &mdash; SNP/GWAS workflow 2023 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
->>>>>>> ab67cd767b8a60c6441619cc9e7b4939d753b40b
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,10 +18,10 @@
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
-    <script src="_static/searchtools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Check call rate per SNP and per sample (both SNP and Sample-level)" href="qualitycontrol.html" />
+    <link rel="prev" title="Set-up" href="setup.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,7 +36,7 @@
             
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -62,11 +48,11 @@
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Set-up</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">From raw data to plink</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="genomestudio.html">Load data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#re-cluster">Re-cluster</a></li>
-<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#genomestudio-output-files">genomestudio output files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="genomestudio.html#authors">Authors</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Load data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#re-cluster">Re-cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#genomestudio-output-files">genomestudio output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#authors">Authors</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Quality control</span></p>
 <ul>
@@ -74,7 +60,6 @@
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#check-maf-snp-level">2. Check MAF (SNP-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#check-sample-heterozygosity-sample-level">3. Check sample heterozygosity (Sample-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#check-sex-discordance-sample-level">4. Check sex discordance (Sample-level)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#check-relatedness-sample-level">5. Check relatedness (Sample-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#hardy-weinberg-equilibrium-snp-level">6. Hardy–Weinberg equilibrium (SNP level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#sample-qc-pca">7. Sample QC: PCA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qualitycontrol.html#final-remarks">Final remarks</a></li>
@@ -100,8 +85,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Search</li>
+      <li class="breadcrumb-item active">Load data</li>
       <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com///blob//docs/genomestudio.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -109,52 +95,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <section id="load-data">
+<span id="genomestudio-page"></span><h1>Load data<a class="headerlink" href="#load-data" title="Link to this heading"></a></h1>
+<p>image</p>
+</section>
+<section id="re-cluster">
+<span id="cluster-page"></span><h1>Re-cluster<a class="headerlink" href="#re-cluster" title="Link to this heading"></a></h1>
+<p>We want to select Y, X and autosomal chromosomas to improve clustering.</p>
+</section>
+<section id="genomestudio-output-files">
+<span id="output-page"></span><h1>genomestudio output files<a class="headerlink" href="#genomestudio-output-files" title="Link to this heading"></a></h1>
+<p>At this point we should be able to generate .map and .ped file and continue with QC.</p>
+</section>
+<section id="authors">
+<h1>Authors<a class="headerlink" href="#authors" title="Link to this heading"></a></h1>
+<p>Martin Banchero, Rui Marcelo</p>
+</section>
 
-  
-  <div id="search-results">
-  
-<<<<<<< HEAD
-</a><form class="sidebar-search-container" method="get" action="#" role="search">
-  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
-  <input type="hidden" name="check_keywords" value="yes">
-  <input type="hidden" name="area" value="default">
-</form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Genome studio</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Processing_raw_data.html">Generate plink files</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Quality control</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="QC_overview.html">Quality control overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Check_call_rate_per_SNP_per_sample.html">Check call rate per SNP and per sample</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Check_MAF.html">Check MAF (SNP-level)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Check_sample_heterozygosity.html">Check sample heterozygosity (Sample-level)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Check_sex_discordance.html">Check sex discordance (Sample-level)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Check_relatedness.html">Check relatedness (Sample-level)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Hardy--Weinberg_equilibrium.html">Hardy--Weinberg equilibrium (SNP level)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">GWAS</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="GWAS.html">GWAS steps</a></li>
-</ul>
-
-</div>
-</div>
-=======
-  </div>
->>>>>>> ab67cd767b8a60c6441619cc9e7b4939d753b40b
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="setup.html" class="btn btn-neutral float-left" title="Set-up" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qualitycontrol.html" class="btn btn-neutral float-right" title="1. Check call rate per SNP and per sample (both SNP and Sample-level)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
@@ -176,14 +140,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-  <script>
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script id="searchindexloader"></script>
-   
-
+  </script> 
 
 </body>
 </html>
