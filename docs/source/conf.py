@@ -28,7 +28,7 @@ html_theme = "sphinx_rtd_theme"
 #html_theme = 'alabaster'
 html_static_path = ['_static']
 extensions = ["myst_parser"]
-html_theme = 'furo'
+#html_theme = 'furo'
 html_css_files = [
     'css/custom.css',
 ]
