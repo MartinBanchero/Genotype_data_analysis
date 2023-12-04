@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'GenotypeDA-UMCG-GRIAC'
+project = 'Genotype data analysis UMCG-GRIAC'
 copyright = '2023, Martin'
 author = 'Martin'
 release = '2023'
@@ -14,7 +14,8 @@ release = '2023'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+
+extensions = ['sphinx.ext.intersphinx']
 
 templates_path = ['_templates']
 exclude_patterns = []
