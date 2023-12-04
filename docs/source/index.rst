@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to GenotypeDA-UMCG-GRIAC's documentation!
-=================================================
+Welcome to genotype data analysis UMCG-GRIAC's documentation!
+==============================================================
 **Genotype DA UMCG-GRIAC** Workflow to cover processing *genotype data* from intensities to imputation and *GWAS analysis*. 
 The rationale is describe in the following figure:
 
