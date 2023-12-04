@@ -15,7 +15,7 @@ release = '2023'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 
-extensions = ['sphinx.ext.intersphinx']
+extensions = []
 
 templates_path = ['_templates']
 exclude_patterns = []
