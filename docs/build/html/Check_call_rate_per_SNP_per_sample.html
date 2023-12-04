@@ -2,9 +2,12 @@
 <html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="#" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="2. Check MAF (SNP-level)" href="Check_MAF.html" /><link rel="prev" title="SNP array quality control protocol" href="QC_overview.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 --><title>Search - GenotypeDA-UMCG-GRIAC 2023 documentation</title><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>1. Check call rate per SNP and per sample (both SNP and Sample-level) - GenotypeDA-UMCG-GRIAC 2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
@@ -132,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,7 +149,7 @@
   
   <span class="sidebar-brand-text">GenotypeDA-UMCG-GRIAC 2023 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="#" role="search">
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -157,9 +160,9 @@
 <li class="toctree-l1"><a class="reference internal" href="Processing_raw_data.html">Generate plink files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Quality control</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="QC_overview.html">Quality control overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Check_call_rate_per_SNP_per_sample.html">Check call rate per SNP and per sample</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Check call rate per SNP and per sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Check_MAF.html">Check MAF (SNP-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Check_sample_heterozygosity.html">Check sample heterozygosity (Sample-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Check_sex_discordance.html">Check sex discordance (Sample-level)</a></li>
@@ -188,7 +191,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -196,31 +200,78 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          
-<noscript>
-<div class="admonition error">
-  <p class="admonition-title">Error</p>
-  <p>
-    Please activate JavaScript to enable the search functionality.
-  </p>
+          <section id="check-call-rate-per-snp-and-per-sample-both-snp-and-sample-level">
+<h1>1. Check call rate per SNP and per sample (both SNP and Sample-level)<a class="headerlink" href="#check-call-rate-per-snp-and-per-sample-both-snp-and-sample-level" title="Link to this heading">#</a></h1>
+<p>The call rate for a given SNP is defined as the proportion of individuals
+in the study for which the corresponding SNP information is not missing</p>
+<p>The call rate for a given sample is defined as the proportion of SNPs
+that is missing for the sample.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Call rate per sample (imiss) and per SNP (lmiss)</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --missing --out file_call_rate&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
-</noscript>
-
-<div id="search-results"></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Change format to make it easier for R data frame imiss</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_call_rate.imiss | tr -s &#39; &#39; &#39;\t&#39; &gt; call_rate_sample.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Change format lmiss</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_call_rate.lmiss | tr -s &#39; &#39; &#39;\t&#39; &gt; call_rate_SNP.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="plot-histograms-of-call-rate-per-sample">
+<h2>Plot histograms of call rate per sample<a class="headerlink" href="#plot-histograms-of-call-rate-per-sample" title="Link to this heading">#</a></h2>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Load call rate SNP and sample.</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">call_rate_SNP</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;call_rate_SNP.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">                        </span><span class="nf">select </span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+<span class="n">call_rate_samples</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;call_rate_sample.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">                        </span><span class="nf">select </span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="plot-histograms-of-call-rate-per-snp">
+<h2>Plot histograms of call rate per snp<a class="headerlink" href="#plot-histograms-of-call-rate-per-snp" title="Link to this heading">#</a></h2>
+</section>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="Check_MAF.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">2. Check MAF (SNP-level)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="QC_overview.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><strong>SNP array quality control protocol</strong></div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -239,8 +290,28 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">1. Check call rate per SNP and per sample (both SNP and Sample-level)</a><ul>
+<li><a class="reference internal" href="#plot-histograms-of-call-rate-per-sample">Plot histograms of call rate per sample</a></li>
+<li><a class="reference internal" href="#plot-histograms-of-call-rate-per-snp">Plot histograms of call rate per snp</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -249,8 +320,5 @@
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
-    
-<script src="_static/searchtools.js"></script>
-<script src="_static/language_data.js"></script>
-<script src="searchindex.js"></script></body>
+    </body>
 </html>

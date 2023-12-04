@@ -3,13 +3,14 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Workflow" href="Workflow.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Raw data processing" href="Processing_raw_data.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>GenotypeDA-UMCG-GRIAC 2023 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
     
     
 
@@ -134,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -154,12 +155,23 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Genome studio</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Workflow.html">Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Processing_raw_data.html">Raw data processing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Quality_control.html">QC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GWAS.html">GWAS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Processing_raw_data.html">Generate plink files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quality control</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="QC_overview.html">Quality control overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Check_call_rate_per_SNP_per_sample.html">Check call rate per SNP and per sample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Check_MAF.html">Check MAF (SNP-level)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Check_sample_heterozygosity.html">Check sample heterozygosity (Sample-level)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Check_sex_discordance.html">Check sex discordance (Sample-level)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Check_relatedness.html">Check relatedness (Sample-level)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hardy--Weinberg_equilibrium.html">Hardy--Weinberg equilibrium (SNP level)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">GWAS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GWAS.html">GWAS steps</a></li>
 </ul>
 
 </div>
@@ -188,7 +200,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -196,23 +208,17 @@
         <article role="main">
           <section id="welcome-to-genotypeda-umcg-griac-s-documentation">
 <h1>Welcome to GenotypeDA-UMCG-GRIAC’s documentation!<a class="headerlink" href="#welcome-to-genotypeda-umcg-griac-s-documentation" title="Link to this heading">#</a></h1>
-<p><strong>Genotype DA UMCG-GRIAC</strong> Workflow to cover processing <em>genotype data</em> from intensities to imputation and <em>GWAS analysis</em>.</p>
+<p><strong>Genotype DA UMCG-GRIAC</strong> Workflow to cover processing <em>genotype data</em> from intensities to imputation and <em>GWAS analysis</em>.
+The rationale is describe in the following figure:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This project is under active development.</p>
 </div>
-<div class="toctree-wrapper compound" id="mastertoc">
-<p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Workflow.html">Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Processing_raw_data.html">Raw data processing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Processing_raw_data.html#hands-on-genome-studio">Hands on genome studio</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Processing_raw_data.html#generate-plink-files">Generate plink files</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Quality_control.html">QC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GWAS.html">GWAS</a></li>
-</ul>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
 </div>
 </section>
 
@@ -221,12 +227,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="Workflow.html">
+          <a class="next-page" href="Processing_raw_data.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Workflow</div>
+                <div class="title">Raw data processing</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -249,8 +255,26 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Welcome to GenotypeDA-UMCG-GRIAC’s documentation!</a><ul>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
