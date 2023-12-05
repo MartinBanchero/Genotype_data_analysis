@@ -1,4 +1,4 @@
-1. Check call rate per SNP and per sample (both SNP and Sample-level)
+1. Tatiana Karp Check call rate per SNP and per sample (both SNP and Sample-level)
 ======================================================================================
 
 The call rate for a given SNP is defined as the proportion of individuals
