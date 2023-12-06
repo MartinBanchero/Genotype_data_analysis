@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3. Check sample heterozygosity (Sample-level) &mdash; Genotype data analysis UMCG-GRIAC 2023 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -97,12 +95,41 @@
 at a given SNP within an individual.
 Outliers showing excess or depletion in heterozygotes
 genotypes may be due to contamination or issues during genotyping process.</p>
-<p>?? should we do it already only with high call rate SNPs?</p>
-<section id="plot-sample-call-rate-vs-heterozygosity">
-<h2>Plot sample call rate vs heterozygosity<a class="headerlink" href="#plot-sample-call-rate-vs-heterozygosity" title="Link to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>Advised</strong>: exclude samples with more than 3 standard deviations away from mean heterozygosity.Lifelines uses 4sd from the mean heterozygosity.</p>
+<p>Consider doing it already only with high call rate SNPs?</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --het --out file&quot;</span><span class="p">)</span>
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file.het | tr -s &#39; &#39; &#39;\t&#39; &gt; file_het.tabs&quot;</span><span class="p">)</span>
+<span class="n">het_level</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim </span><span class="p">(</span><span class="s">&quot;file_het.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select </span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="plot-sample-call-rate-vs-heterozygosity">
+<h2>Plot sample call rate vs heterozygosity<a class="headerlink" href="#plot-sample-call-rate-vs-heterozygosity" title="Link to this heading"></a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sample_missing_rate_het</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">call_rate_samples_after_filter</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">        </span><span class="nf">left_join</span><span class="p">(</span><span class="n">het_level</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;IID&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;IID&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">        </span><span class="nf">rename</span><span class="p">(</span><span class="n">heter_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;F&quot;</span><span class="p">)</span>
+<span class="n">std</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">sample_missing_rate_het</span><span class="o">$</span><span class="n">heter_rate</span><span class="p">)</span><span class="w"> </span><span class="c1">## calculate standard deviation</span>
+<span class="n">std_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="m">-2</span><span class="o">*</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="o">*</span><span class="n">std</span><span class="p">,</span><span class="w"> </span><span class="m">-3</span><span class="o">*</span><span class="n">std</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">sample_missing_rate_het</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="w"> </span><span class="n">F_MISS</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="w"> </span><span class="n">heter_rate</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_hline</span><span class="p">(</span><span class="n">yintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std_list</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">],</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;grey&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_hline</span><span class="p">(</span><span class="n">yintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std_list</span><span class="p">[</span><span class="m">5</span><span class="o">:</span><span class="m">6</span><span class="p">],</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Heterozygosity vs Missingness across samples&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Proportion of missing SNPs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Heterozygosity rate(+- 3 sd)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<dl class="simple">
+<dt><strong>Advice</strong>      Exclude samples with more than 3 standard deviations away from mean heterozygosity.</dt><dd><p>Lifelines uses 4sd from the mean heterozygosity.</p>
+</dd>
+</dl>
 </div>
 </section>
 </section>

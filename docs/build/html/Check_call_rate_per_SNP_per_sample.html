@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1. Tatiana Karp Check call rate per SNP and per sample (both SNP and Sample-level) &mdash; Genotype data analysis UMCG-GRIAC 2023 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
-
-  
+  <title>1. Check call rate per SNP and per sample (both SNP and Sample-level) &mdash; Genotype data analysis UMCG-GRIAC 2023 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -55,6 +53,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Check call rate per SNP and per sample</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#plot-histograms-of-call-rate-per-sample">Plot histograms of call rate per sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plot-histograms-of-call-rate-per-snp">Plot histograms of call rate per snp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exclude-snps-with-call-rate-90-and-check-again-sample-call-rate">Exclude SNPs with call rate &lt; 90% and check again sample call rate</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Check_MAF.html">Check MAF (SNP-level)</a></li>
@@ -82,7 +81,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">1. Tatiana Karp Check call rate per SNP and per sample (both SNP and Sample-level)</li>
+      <li class="breadcrumb-item active">1. Check call rate per SNP and per sample (both SNP and Sample-level)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/Check_call_rate_per_SNP_per_sample.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -92,8 +91,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tatiana-karp-check-call-rate-per-snp-and-per-sample-both-snp-and-sample-level">
-<h1>1. Tatiana Karp Check call rate per SNP and per sample (both SNP and Sample-level)<a class="headerlink" href="#tatiana-karp-check-call-rate-per-snp-and-per-sample-both-snp-and-sample-level" title="Link to this heading"></a></h1>
+  <section id="check-call-rate-per-snp-and-per-sample-both-snp-and-sample-level">
+<h1>1. Check call rate per SNP and per sample (both SNP and Sample-level)<a class="headerlink" href="#check-call-rate-per-snp-and-per-sample-both-snp-and-sample-level" title="Link to this heading"></a></h1>
 <p>The call rate for a given SNP is defined as the proportion of individuals
 in the study for which the corresponding SNP information is not missing</p>
 <p>The call rate for a given sample is defined as the proportion of SNPs
@@ -127,9 +126,74 @@ that is missing for the sample.</p>
 </pre></div>
 </div>
 </div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Calculate n of filtered out samples with missing rate &lt; 0.1</span><a class="headerlink" href="#id5" title="Link to this code"></a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">n_filtered_out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">call_rate_samples</span><span class="o">$</span><span class="n">F_MISS</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0.1</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">call_rate_samples</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">((</span><span class="m">1</span><span class="o">-</span><span class="n">F_MISS</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">ylab </span><span class="p">(</span><span class="s">&#39;Sample number&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">xlab </span><span class="p">(</span><span class="s">&#39;Call Rate(%)&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;red&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">70</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">200</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Number of samples to exclude = &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">n_filtered_out</span><span class="p">),</span>
+<span class="w">                </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="plot-histograms-of-call-rate-per-snp">
 <h2>Plot histograms of call rate per snp<a class="headerlink" href="#plot-histograms-of-call-rate-per-snp" title="Link to this heading"></a></h2>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Calculate n of filtered out SNPs with missing rate &lt; 0.1</span><a class="headerlink" href="#id6" title="Link to this code"></a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">n_filtered_out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">call_rate_SNP</span><span class="o">$</span><span class="n">F_MISS</span><span class="w"> </span><span class="o">&gt;=</span><span class="m">0.1</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">call_rate_SNP</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">((</span><span class="m">1</span><span class="o">-</span><span class="n">F_MISS</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">ylab </span><span class="p">(</span><span class="s">&#39;SNP number&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">xlab </span><span class="p">(</span><span class="s">&#39;Call Rate(%)&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;red&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">70</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100000</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Number of SNPs to exclude = &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">n_filtered_out</span><span class="p">),</span>
+<span class="w">                                </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="exclude-snps-with-call-rate-90-and-check-again-sample-call-rate">
+<h2>Exclude SNPs with call rate &lt; 90% and check again sample call rate<a class="headerlink" href="#exclude-snps-with-call-rate-90-and-check-again-sample-call-rate" title="Link to this heading"></a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --geno 0.1 --recode --out file_filtered_snps&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Check again sample call rate</span><a class="headerlink" href="#id7" title="Link to this code"></a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file_filtered_snps.ped --map file_filtered_snps.map --missing --out file_call_rate_filtered_snps&quot;</span><span class="p">)</span>
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_call_rate_filtered_snps.imiss | tr -s &#39; &#39; &#39;\t&#39; &gt; file_call_rate_filtered_snps_imiss.tabs&quot;</span><span class="p">)</span>
+<span class="n">call_rate_samples_after_filter</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_call_rate_filtered_snps_imiss.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">        </span><span class="nf">select </span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Plot histograms of call rate per sample after filtered SNPs</span><a class="headerlink" href="#id8" title="Link to this code"></a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">n_filtered_out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">call_rate_samples_after_filter</span><span class="o">$</span><span class="n">F_MISS</span><span class="w"> </span><span class="o">&gt;</span><span class="m">0.1</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">call_rate_samples_after_filter</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">((</span><span class="m">1</span><span class="o">-</span><span class="n">F_MISS</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="nf">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="nf">ylab </span><span class="p">(</span><span class="s">&#39;Sample number&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="nf">xlab </span><span class="p">(</span><span class="s">&#39;Call Rate(%)&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;red&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">70</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">200</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Number of samples to exclude = &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">n_filtered_out</span><span class="p">),</span>
+<span class="w">                        </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This iteration can help you decide which threshold to choose to exclude low quality samples and SNPs.
+The threshold depends on the sample size, usually it varies from 95% to 98%.</p>
+</div>
 </section>
 </section>
 

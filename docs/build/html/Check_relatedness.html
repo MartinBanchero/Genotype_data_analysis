@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>5. Check relatedness (Sample-level) &mdash; Genotype data analysis UMCG-GRIAC 2023 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -57,10 +55,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Check_sample_heterozygosity.html">Check sample heterozygosity (Sample-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Check_sex_discordance.html">Check sex discordance (Sample-level)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Check relatedness (Sample-level)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#ld-pruning">LD pruning</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#calculate-ibd-identity-by-descent-the-degree-of-recent-shared-ancestry">Calculate IBD - identity by descent (the degree of recent shared ancestry)</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#ld-pruning">LD pruning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculate-ibd-identity-by-descent-the-degree-of-recent-shared-ancestry">Calculate IBD - identity by descent (the degree of recent shared ancestry)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Hardy--Weinberg_equilibrium.html">Hardy--Weinberg equilibrium (SNP level)</a></li>
@@ -105,11 +101,30 @@ Typically, the individual of a related pair with lower genotype call rate is rem
 <section id="ld-pruning">
 <h2>LD pruning<a class="headerlink" href="#ld-pruning" title="Link to this heading"></a></h2>
 <p>First we need to perform linkage disequilibrium (LD) pruning with a threshold value of 0.7 (this could vary, some studies use 0.2) - remove SNPs with high LD with each other (removes one from each pair).
-This eliminates a large degree of redundancy in the data.</p>
-<section id="calculate-ibd-identity-by-descent-the-degree-of-recent-shared-ancestry">
-<h3>Calculate IBD - identity by descent (the degree of recent shared ancestry)<a class="headerlink" href="#calculate-ibd-identity-by-descent-the-degree-of-recent-shared-ancestry" title="Link to this heading"></a></h3>
-<p>This dimension reduction step is commonly applied prior to both IBD analysis and PCA.</p>
+This eliminates a large degree of redundancy in the data. This dimension reduction step is commonly applied prior to both IBD analysis and PCA.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --indep-pairwise 50 5 0.7 --out file&quot;</span><span class="p">)</span>
+<span class="c1"># keep only selected snps for your data</span>
+<span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --exclude file.prune.out --recode --out prunedSet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
+<section id="calculate-ibd-identity-by-descent-the-degree-of-recent-shared-ancestry">
+<h2>Calculate IBD - identity by descent (the degree of recent shared ancestry)<a class="headerlink" href="#calculate-ibd-identity-by-descent-the-degree-of-recent-shared-ancestry" title="Link to this heading"></a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&#39;--ped prunedSet.ped --map prunedSet.map --Z-genome --out Pruned_IBD&#39;</span><span class="p">)</span>
+<span class="c1">#change format</span>
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;zcat Pruned_IBD.genome.gz | tr -s &#39; &#39; &#39;\t&#39; &gt; Pruned_IBD.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let’s check samples with IBD &gt; 0.1875 (PI_HAT column in the plink output)</span>
+<span class="n">IBD_high_relat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">IBD</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">filter</span><span class="p">(</span><span class="n">PI_HAT</span><span class="o">&gt;</span><span class="w"> </span><span class="m">0.1875</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">IBD_high_relat</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Advice</strong> Check the table and exclude one from the pair with the lower call rate (code not provided)</p>
+</div>
 </section>
 </section>
 

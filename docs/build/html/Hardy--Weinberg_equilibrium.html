@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>6. Hardy–Weinberg equilibrium (SNP level) &mdash; Genotype data analysis UMCG-GRIAC 2023 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -90,9 +88,23 @@
              
   <section id="hardy-weinberg-equilibrium-snp-level">
 <h1>6. Hardy–Weinberg equilibrium (SNP level)<a class="headerlink" href="#hardy-weinberg-equilibrium-snp-level" title="Link to this heading"></a></h1>
+<p>Violations of HWE can be an indication of the presence of population substructure or the occurrence of a genotyping error.
+While they are not always distinguishable, it is a common practice to assume a genotyping error and remove SNPs for which HWE is violated.
+If case-control status is available, this filtering should be based only on controls as a violation in cases may be an indication of association.
+Departures from HWE are generally measured at a given SNP using a 𝜒2 goodness-of-fit test between the observed and expected genotypes.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Check ped file : does it have phenotypes? If ped doesn’t have phenotypes reformat ped to add phenotypes (code not provided).</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># check only controls: I created separate ped only with controls</span>
+<span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped only_controls.ped --map file.map --hardy --out Controls_Hardy&quot;</span><span class="p">)</span>
+
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat Controls_Hardy.hwe | tr -s &#39; &#39; &#39;\t&#39; &gt; Controls_Hardy_hwe.tab&quot;</span><span class="p">)</span>
+
+<span class="n">PLINK_controls_HWE</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;Controls_Hardy_hwe.tab&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">        </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">        </span><span class="nf">filter</span><span class="p">(</span><span class="n">TEST</span><span class="w"> </span><span class="o">==</span><span class="s">&quot;UNAFF&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

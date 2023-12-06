@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SNP array quality control protocol &mdash; Genotype data analysis UMCG-GRIAC 2023 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -101,8 +99,12 @@ chromosome. The .map file contains a row for each SNP corresponding
 chromosome (chr) and coordinate (BPPos) based on the current genome build.</p>
 <p>Most of the steps for the QC will be performed in plink1.9, so it has to be installed.</p>
 <p>Let’s prepare the environment by uploading the libraries and creating the function to run PLINK from the directory where the exe file is:</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">runPLINK</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">PLINKoptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="p">){</span>
-<span class="nf">system</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;~/Packages/PLINK/plink1.9/plink&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">PLINKoptions</span><span class="p">))</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggrepel</span><span class="p">)</span>
+
+<span class="n">runPLINK</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">PLINKoptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="p">){</span>
+<span class="nf">system</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;~/Packages/PLINK/plink1.9/plink&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">PLINKoptions</span><span class="p">))}</span>
 </pre></div>
 </div>
 <div class="admonition note">

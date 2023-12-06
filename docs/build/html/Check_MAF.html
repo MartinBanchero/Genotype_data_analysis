@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2. Check MAF (SNP-level) &mdash; Genotype data analysis UMCG-GRIAC 2023 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -97,12 +95,34 @@
 across study participants generally results in inadequate power to infer a statistically significant
 relationship between the SNP and the trait under study. This can occur when we have a very small
 MAF so that the large majority of individuals have two copies of the major allele.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --freq --out file_maf&quot;</span><span class="p">)</span>
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_maf.frq | tr -s &#39; &#39; &#39;\t&#39; &gt; file_maf_frq.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Threshold for MAF can vary between 1% and 5% (for small sample settings)</p>
 </div>
 <section id="plot-maf-histogram">
 <h2>Plot MAF histogram<a class="headerlink" href="#plot-maf-histogram" title="Link to this heading"></a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">MAF_check</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_maf_frq.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+<span class="n">maf_01</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">MAF_check</span><span class="o">$</span><span class="n">MAF</span><span class="o">&lt;</span><span class="m">0.01</span><span class="p">)</span><span class="w"> </span><span class="c1"># threshold at 1%</span>
+<span class="n">maf_05</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">MAF_check</span><span class="o">$</span><span class="n">MAF</span><span class="o">&lt;</span><span class="m">0.05</span><span class="p">)</span><span class="w"> </span><span class="c1"># threshold at 5%</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">MAF_check</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">MAF</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">   </span><span class="nf">geom_histogram</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">   </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">   </span><span class="nf">ylab </span><span class="p">(</span><span class="s">&quot;# of occurences&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">   </span><span class="nf">xlab </span><span class="p">(</span><span class="s">&quot;Minor allele frequency&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">   </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.01</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;grey&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">   </span><span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">-0.02</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">100000</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;maf = 0.01    &quot;</span><span class="p">,</span><span class="n">maf_01</span><span class="p">,</span><span class="w"> </span><span class="s">&#39; SNPs&#39;</span><span class="p">),</span>
+<span class="w">            </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">   </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;grey&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">   </span><span class="nf">annotate</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">0.043</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">100000</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;maf= 0.05    &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">maf_05</span><span class="p">,</span><span class="w"> </span><span class="s">&#39; SNPs&#39;</span><span class="p">),</span>
+<span class="w">            </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>Advice</strong> For small sample size it is recommended to exclude SNPs with MAF &lt; 0.05.</p>

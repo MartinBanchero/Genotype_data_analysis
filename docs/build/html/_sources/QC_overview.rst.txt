@@ -18,8 +18,12 @@ Let's prepare the environment by uploading the libraries and creating the functi
 
 .. code-block:: r
 
+	library(dplyr)
+	library(ggplot2)
+	library(ggrepel)
+	
 	runPLINK <- function(PLINKoptions = ''){
-  	system(paste("~/Packages/PLINK/plink1.9/plink", PLINKoptions))
+  	system(paste("~/Packages/PLINK/plink1.9/plink", PLINKoptions))}
 
 .. note::
 

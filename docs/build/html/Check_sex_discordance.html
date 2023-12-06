@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>4. Check sex discordance (Sample-level) &mdash; Genotype data analysis UMCG-GRIAC 2023 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=83b30c75" />
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -55,7 +53,10 @@
 <li class="toctree-l1"><a class="reference internal" href="Check_call_rate_per_SNP_per_sample.html">Check call rate per SNP and per sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Check_MAF.html">Check MAF (SNP-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Check_sample_heterozygosity.html">Check sample heterozygosity (Sample-level)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Check sex discordance (Sample-level)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Check sex discordance (Sample-level)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#check-y-chr-counts-also-if-there-are-strange-samples">Check Y chr counts also if there are strange samples</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Check_relatedness.html">Check relatedness (Sample-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Hardy--Weinberg_equilibrium.html">Hardy--Weinberg equilibrium (SNP level)</a></li>
 </ul>
@@ -94,9 +95,68 @@
 information of each sample is compared with genotypes at chromosomes X and Y.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>NB:</strong> This method however does not detect same sex sample mix-ups and is not reliable when there are sex chromosome abnormalities.
-??For this step we need to use files with already excluded low call rate SNPs</p>
+<p><strong>NB:</strong> This method however does not detect same sex sample mix-ups and is not reliable when there are sex chromosome abnormalities.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>NB:</strong> Fot this step check that ped file has recorded sex, otherwise consider using sex from metadata</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">For this step we need to use files with already excluded low call rate SNPs</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file.ped --map file.map --mind 0.1 --recode --out file_SNP_filtered&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Now let’s check check sex discordance</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file_SNP_filtered.ped --map file_SNP_filtered.map --check-sex --out file_SNP_filtered&quot;</span><span class="p">)</span>
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_SNP_filtered.sexcheck | tr -s &#39; &#39; &#39;\t&#39; &gt;  file_SNP_filtered_sexcheck.tabs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Plot reported sex vs F value (X heterozygosity level).</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Plink_sex_filtered</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_SNP_filtered_sexcheck.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">        </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Plink_sex_filtered</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Plink_sex_filtered</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;male&quot;</span><span class="p">))</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">Plink_sex_filtered</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">PEDSEX</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="w"> </span><span class="n">`F`</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_jitter</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">((</span><span class="n">Plink_sex_filtered</span><span class="o">$</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="nf">ifelse</span><span class="p">(((</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;F&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0.2</span><span class="p">)),</span><span class="w"> </span><span class="n">IID</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">),</span>
+<span class="w">                                                </span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.4</span><span class="p">,</span><span class="w"> </span><span class="n">vjust</span><span class="o">=</span><span class="w"> </span><span class="m">0.4</span><span class="p">))</span><span class="o">+</span>
+<span class="w">        </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Reported sex&quot;</span><span class="p">)</span><span class="o">+</span>
+<span class="w">        </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Heterozygosity rate&quot;</span><span class="p">)</span><span class="o">+</span>
+<span class="w">        </span><span class="nf">theme_bw</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>plink report marks problematic samples, this information should be available in file_SNP_filtered_sexcheck.tabs
+<strong>Advice</strong> It is also important to look at the plot and asses it visually</p>
+</div>
+<section id="check-y-chr-counts-also-if-there-are-strange-samples">
+<h2>Check Y chr counts also if there are strange samples<a class="headerlink" href="#check-y-chr-counts-also-if-there-are-strange-samples" title="Link to this heading"></a></h2>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Plot y chromosome counts</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">        </span><span class="nf">mutate</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;female&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;male&quot;</span><span class="p">))</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">Plink_sex_filtered_ycount</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">PEDSEX</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="w"> </span><span class="n">YCOUNT</span><span class="w"> </span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="nf">ifelse</span><span class="p">(((</span><span class="n">PEDSEX</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;male&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">YCOUNT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">3000</span><span class="p">)),</span><span class="w"> </span><span class="n">IID</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">),</span>
+<span class="w">                                        </span><span class="n">hjust</span><span class="o">=</span><span class="w"> </span><span class="m">0.4</span><span class="p">,</span><span class="w"> </span><span class="n">vjust</span><span class="o">=</span><span class="w"> </span><span class="m">0.4</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Reported sex&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Y counts&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">theme_bw</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Advice:</strong> Look at the plot and check that males and females samples are clearly separating on Y-axis</p>
+</div>
+</section>
 </section>
 
 
