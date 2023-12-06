@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Genotype data analysis UMCG-GRIAC'
-copyright = '2023, Martin'
-author = 'Martin'
+copyright = '2023, Martin Banchero, Tatiana Karp'
+author = 'Martin, Tatiana'
 release = '2023'
 
 # -- General configuration ---------------------------------------------------

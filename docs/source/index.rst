@@ -33,12 +33,7 @@ The rationale is describe in the following figure:
    Check relatedness (Sample-level) <Check_relatedness>
    Hardy--Weinberg equilibrium (SNP level) <Hardy--Weinberg_equilibrium>
    PCA (SNP level) <PCA>
+   Final remarks <Final_remarks>
    
-   
-.. toctree::
-   :hidden:
-   :maxdepth: 1
-   :caption: GWAS
-     
-   GWAS steps <GWAS>
+
    

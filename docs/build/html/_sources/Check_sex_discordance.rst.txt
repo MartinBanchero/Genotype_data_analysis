@@ -44,6 +44,7 @@ Check Y chr counts also if there are strange samples
 ------------------------------------------------------------------------------
 
 .. code-block:: r
+	
 	runPLINK("--ped file_SNP_filtered.ped --map file_SNP_filtered.map --check-sex ycount --out file_SNP_filtered_ycount")
 	system("cat file_SNP_filtered_ycount.sexcheck | tr -s ' ' '\t' > file_SNP_filtered_ycount_sexcheck.tabs")
 	Plink_sex_filtered_ycount <- read.delim("file_SNP_filtered_ycount_sexcheck.tabs") %>%

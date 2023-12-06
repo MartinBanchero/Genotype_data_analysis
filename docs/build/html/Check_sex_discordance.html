@@ -59,10 +59,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Check_relatedness.html">Check relatedness (Sample-level)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Hardy--Weinberg_equilibrium.html">Hardy--Weinberg equilibrium (SNP level)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">GWAS</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="GWAS.html">GWAS steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PCA.html">PCA (SNP level)</a></li>
 </ul>
 
         </div>
@@ -138,6 +135,12 @@ information of each sample is compared with genotypes at chromosomes X and Y.</p
 </div>
 <section id="check-y-chr-counts-also-if-there-are-strange-samples">
 <h2>Check Y chr counts also if there are strange samples<a class="headerlink" href="#check-y-chr-counts-also-if-there-are-strange-samples" title="Link to this heading"></a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">runPLINK</span><span class="p">(</span><span class="s">&quot;--ped file_SNP_filtered.ped --map file_SNP_filtered.map --check-sex ycount --out file_SNP_filtered_ycount&quot;</span><span class="p">)</span>
+<span class="nf">system</span><span class="p">(</span><span class="s">&quot;cat file_SNP_filtered_ycount.sexcheck | tr -s &#39; &#39; &#39;\t&#39; &gt; file_SNP_filtered_ycount_sexcheck.tabs&quot;</span><span class="p">)</span>
+<span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.delim</span><span class="p">(</span><span class="s">&quot;file_SNP_filtered_ycount_sexcheck.tabs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">        </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">Plot y chromosome counts</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Plink_sex_filtered_ycount</span><span class="w"> </span><span class="o">%&gt;%</span>
@@ -170,7 +173,7 @@ information of each sample is compared with genotypes at chromosomes X and Y.</p
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Martin.</p>
+    <p>&#169; Copyright 2023, Martin Banchero, Tatiana Karp.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
