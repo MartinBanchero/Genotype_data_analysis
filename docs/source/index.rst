@@ -32,7 +32,7 @@ The rationale is describe in the following figure:
    Check sex discordance (Sample-level) <Check_sex_discordance>
    Check relatedness (Sample-level) <Check_relatedness>
    Hardy--Weinberg equilibrium (SNP level) <Hardy--Weinberg_equilibrium>
-   
+   PCA (SNP level) <PCA>
    
    
 .. toctree::
